@@ -9,8 +9,14 @@ const favSchema = mongoose.Schema({
         required: true
     },
     poems: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Poem'
+        
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+        },
+        poemId: {
+            type: mongoose.Schema.Types.ObjectId,
+        }
+        
     }]
 });
 

@@ -8,6 +8,7 @@ function authenticateToken(req, res, next) {
     }
 
     jwt.verify(token, 'secret', (err, decoded) => {
+        
         if (err) {
             return res.status(403).json({ message: 'Forbidden: Invalid tokenn.' });
         }
