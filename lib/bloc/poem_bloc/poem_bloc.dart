@@ -32,12 +32,12 @@ class PoemBloc extends Bloc<PoemEvent, PoemState> {
   void _onPoemCreate(PoemCreate event, Emitter<PoemState> emit) async {
     try {
       final token = await _storage.read(key: 'token');
+
       await poemRepository.createPoem(event.poem, token: token!);
-    } catch (_) {
-      print('PoemLoad error on create: $_');
-      final token = await _storage.read(key: 'token');
-      final poems = await poemRepository.getPoems(token: token!);
+      final poems = await poemRepository.getPoems(token: token);
       emit(PoemsLoadSuccess(poems));
+    } catch (_) {
+      print('$_');
     }
   }
 
@@ -49,9 +49,7 @@ class PoemBloc extends Bloc<PoemEvent, PoemState> {
 
       emit(PoemsLoadSuccess(poems));
     } catch (_) {
-      final token = await _storage.read(key: 'token');
-      final poems = await poemRepository.getPoems(token: token!);
-      emit(PoemsLoadSuccess(poems));
+      print('$_');
     }
   }
 
@@ -62,9 +60,8 @@ class PoemBloc extends Bloc<PoemEvent, PoemState> {
       final poems = await poemRepository.getPoems(token: token);
       emit(PoemsLoadSuccess(poems));
     } catch (_) {
-      final token = await _storage.read(key: 'token');
-      final poems = await poemRepository.getPoems(token: token!);
-      emit(PoemsLoadSuccess(poems));
+      print('$_');
+      ;
     }
   }
 }

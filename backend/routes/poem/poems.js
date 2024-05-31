@@ -12,7 +12,7 @@ poemRouter.post('/api/poems/',authenticateToken,isPoet, async (req, res) => {
         const { title, author, content, genre } = req.body;
         const poem = new Poem({ title, author, content, genre });
         await poem.save();
-        res.status(201).json({ message: 'Poem created successfully.', poem });
+        res.status(201).json(poem);
     } catch (error) {
         console.error('Error creating poem:', error);
         res.status(500).json({ message: 'Internal server error.' });
@@ -49,7 +49,7 @@ poemRouter.put('/api/poems/:id',authenticateToken, isPoet, async (req, res) => {
         if (!updatedPoem) {
             return res.status(404).json({ message: 'Poem not found.' });
         }
-        res.status(201).json(updatedPoem);
+        res.status(204).json(updatedPoem);
     } catch (error) {
         console.error('Error updating poem by ID:', error);
         res.status(500).json({ message: 'Internal server error.' });
@@ -62,7 +62,7 @@ poemRouter.delete('/api/poems/:id',authenticateToken,isPoet,async (req, res) => 
         if (!deletedPoem) {
             return res.status(404).json({ message: 'Poem not found.' });
         }
-        res.status(200).json({ message: 'Poem deleted successfully.' });
+        res.status(204).json({ message: 'Poem deleted successfully.' });
     } catch (error) {
         console.error('Error deleting poem by ID:', error);
         res.status(500).json({ message: 'Internal server error.' });

@@ -62,7 +62,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<Map<String, dynamic>> _login(
       String username, String password, String email) async {
     const url =
-        'http://localhost:3000/api/login'; // Update with your backend URL
+        'http://10.0.2.2:3000/api/login'; // Update with your backend URL
     try {
       final response = await http.post(
         Uri.parse(url),
@@ -77,6 +77,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         return {
           'success': true,
           'token': data['token'],
+          'userId': data['userId'],
           'navigateTo': data['role'] == 'poet' ? '/admin' : '/user',
         };
       } else {

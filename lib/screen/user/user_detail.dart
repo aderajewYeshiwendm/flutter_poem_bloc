@@ -16,6 +16,7 @@ class UserDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         title: Text(user.username),
         actions: [
@@ -37,6 +38,18 @@ class UserDetail extends StatelessWidget {
                 context.go('/admin');
               }),
         ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              '  You can assign role or delete the user dear admin!!!  ',
+              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
       ),
     );
   }

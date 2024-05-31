@@ -28,5 +28,5 @@ mongoose.connect('mongodb://localhost:27017/poem_management_system'
 
 
 app.listen(port,() => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://10.0.2.2:${port}`);
 });

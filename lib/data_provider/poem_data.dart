@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/poem.dart';
 
 class PoemDataProvider {
-  final _baseUrl = 'http://localhost:3000/api/poems/';
+  final _baseUrl = 'http://10.0.2.2:3000/api/poems/';
   final http.Client httpClient;
 
   PoemDataProvider({required this.httpClient});
@@ -26,7 +26,6 @@ class PoemDataProvider {
     );
 
     if (response.statusCode == 201) {
-      print('hi poem created successfully');
       return Poem.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to create Poem.');
@@ -42,7 +41,6 @@ class PoemDataProvider {
     );
 
     if (response.statusCode == 200) {
-      print(response.body);
       final List<dynamic> poemJson = jsonDecode(response.body);
       return poemJson.map((json) => Poem.fromJson(json)).toList();
     } else {

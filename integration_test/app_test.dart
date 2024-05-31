@@ -1,71 +1,46 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:integration_test/integration_test.dart';
-// import 'package:my_flutter_project/main.dart' as app;
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:integration_test/integration_test.dart';
+import 'package:my_flutter_project/main.dart' as app;
+import 'package:my_flutter_project/widgets/email.dart';
+import 'package:my_flutter_project/widgets/password.dart';
+import 'package:my_flutter_project/widgets/username.dart';
 
-// void main() {
-//   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-//   testWidgets('Navigate through the app', (WidgetTester tester) async {
-//     app.main();
-//     await tester.pumpAndSettle();
+  testWidgets('Navigate through the app', (WidgetTester tester) async {
+    // Start the app
+    app.main();
+    await tester.pumpAndSettle();
 
-//     // Verify welcome screen is displayed
-//     expect(find.text('Welcome'), findsOneWidget);
+    // Verify the welcome page is displayed
+    expect(find.text('Welcome!'), findsOneWidget);
+    expect(find.text('To your poems!!!'), findsOneWidget);
 
-//     // Navigate to login screen
-//     await tester.tap(find.text('Login'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Login Page'), findsOneWidget);
+    // Tap the login button and navigate to the login page
+    await tester.tap(find.byKey(Key('loginButton')));
+    await tester.pumpAndSettle();
 
-//     // Navigate to signup screen
-//     await tester.tap(find.text('Signup'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Signup Page'), findsOneWidget);
+    // Verify the login page is displayed
+    expect(find.text('Welcome to the Poetry Haven!'), findsOneWidget);
+    expect(find.text('Username'), findsOneWidget);
+    expect(find.text('Email Address'), findsOneWidget);
+    expect(find.text('Password'), findsOneWidget);
 
-//     // Navigate to about screen
-//     await tester.tap(find.text('About'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('About Page'), findsOneWidget);
+    // Enter username, email, and password
+    await tester.enterText(find.byType(UsernameField), 'testuser');
+    await tester.enterText(find.byType(EmailField), 'testuser@example.com');
+    await tester.enterText(find.byType(PasswordField), 'password');
 
-//     // Navigate to contact screen
-//     await tester.tap(find.text('Contacts'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Contacts Page'), findsOneWidget);
+    // Tap the login button
+    await tester.tap(find.text('Log In'));
+    await tester.pumpAndSettle();
 
-//     // Navigate to poem list screen
-//     await tester.tap(find.text('Poems List'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Poems List'), findsOneWidget);
+    final searchField = find.byType(TextField).first;
+    expect(searchField, findsOneWidget);
 
-//     // Select a poem and navigate to poem detail screen
-//     await tester.tap(find.text("PoemTile").first);
-//     await tester.pumpAndSettle();
-//     expect(find.text('Poem Detail'), findsOneWidget);
-
-//     // Navigate back to poem list screen
-//     await tester.tap(find.byIcon(Icons.arrow_back));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Poems List'), findsOneWidget);
-
-//     // Navigate to user home screen
-//     await tester.tap(find.text('User Home'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('User Home Page'), findsOneWidget);
-
-//     // Navigate to user list screen
-//     await tester.tap(find.text('Users List'));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Users List'), findsOneWidget);
-
-//     // Select a user and navigate to user poem detail screen
-//     await tester.tap(find.text('UserTile').first);
-//     await tester.pumpAndSettle();
-//     expect(find.text('User Poem Detail'), findsOneWidget);
-
-//     // Navigate back to user list screen
-//     await tester.tap(find.byIcon(Icons.arrow_back));
-//     await tester.pumpAndSettle();
-//     expect(find.text('Users List'), findsOneWidget);
-//   });
-// }
+    final searchFieldWidget = tester.widget<TextField>(searchField);
+    expect(searchFieldWidget.decoration?.hintText, 'your username ...');
+  });
+}

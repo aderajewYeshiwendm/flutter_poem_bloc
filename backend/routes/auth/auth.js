@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import authenticateToken from '../auth/authenticate_token.js';
 import isPoet from './role.js';
+import isAdmin from './authorize.js';
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post('/api/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        const token = jwt.sign({ userId: user._id , role: user.role},'secret', { expiresIn: '1h' });
+        const token = jwt.sign({ userId: user._id , role: user.role,username:user.username,},'secret', { expiresIn: '1h' });
 
         res.status(200).json({ user: user,"role":user.role,"username":user.username,"email":user.email, "userId":user._id, "token": token });
     } catch (err) {
@@ -124,7 +125,7 @@ router.put('/api/users/:id', authenticateToken, async (req, res) => {
     }
 });
 
-router.put('/api/allusers/:id',authenticateToken, isPoet, async (req, res) => {
+router.put('/api/allusers/:id',authenticateToken, isPoet,async (req, res) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedUser) {

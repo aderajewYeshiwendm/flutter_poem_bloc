@@ -11,7 +11,7 @@ commentRouter.post('/api/comments', async (req, res) => {
         }
         const newComment = new Comment({ content, username, poemId });
         await newComment.save();
-        res.status(201).json({ message: 'Comment created successfully.', content: newComment });
+        res.status(201).json({ message: 'Comment created successfully.', content: newComment,username: username });
     } catch (error) {
         console.error('Error creating comment:', error);
         res.status(500).json({ message: 'Internal server error.' });

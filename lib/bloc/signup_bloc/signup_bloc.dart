@@ -9,6 +9,7 @@ import 'signup_state.dart';
 class SignupBloc extends Bloc<SignupEvent, SignupState> {
   final _storage = const FlutterSecureStorage();
   final _idStorage = const FlutterSecureStorage();
+  final _usernameStorage = const FlutterSecureStorage();
 
   SignupBloc() : super(const SignupState()) {
     on<RoleChanged>((event, emit) {
@@ -34,6 +35,8 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         if (result['success']) {
           await _storage.write(key: 'token', value: result['token']);
           await _idStorage.write(key: "userId", value: result['userId']);
+          await _usernameStorage.write(
+              key: "username", value: result['username']);
           if (state.role == 'enthusiast') {
             emit(state.copyWith(navigateTo: '/user'));
           } else if (state.role == 'poet') {
@@ -63,7 +66,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
   Future<Map<String, dynamic>> _signup(
       String username, String password, String email, String role) async {
     const url =
-        'http://localhost:3000/api/register'; // Update with your backend URL
+        'http://10.0.2.2:3000/api/register'; // Update with your backend URL
     try {
       final response = await http.post(
         Uri.parse(url),

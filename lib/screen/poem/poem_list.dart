@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../../bloc/poem_bloc/poem_bloc.dart';
 import '../../bloc/poem_bloc/poem_state.dart';
 import '../../models/poem.dart';
-import 'poem_add_update.dart';
 import 'poem_arg.dart';
 
 class PoemsList extends StatelessWidget {
@@ -19,6 +18,9 @@ class PoemsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.amber,
+        foregroundColor: Colors.deepPurple,
         title: const Text('List of poems'),
       ),
       body: BlocBuilder<PoemBloc, PoemState>(
@@ -88,12 +90,11 @@ class PoemsList extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: ((context) => AddUpdatePoem(
-                    args: PoemArgument(edit: false, poem: poem))))),
-        child: Icon(Icons.add),
+        onPressed: () => context.go(
+          '/addUpdatePoem',
+          extra: PoemArgument(edit: false, poem: poem),
+        ),
+        child: const Icon(Icons.add),
       ),
     );
   }

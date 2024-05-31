@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://localhost:3000/api/users/$userId'),
+        Uri.parse('http://10.0.2.2:3000/api/users/$userId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             UserAccountsDrawerHeader(
               accountName: Text(username),
-              accountEmail: Text(email),
+              accountEmail: const Text(''),
               currentAccountPicture: GestureDetector(
                 onTap: _getImage,
                 child: CircleAvatar(

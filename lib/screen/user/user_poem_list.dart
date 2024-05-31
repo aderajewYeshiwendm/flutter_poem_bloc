@@ -19,7 +19,7 @@ class UserPoemList extends StatefulWidget {
 }
 
 class _UserPoemListState extends State<UserPoemList> {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  final FlutterSecureStorage _idStorage = const FlutterSecureStorage();
   String? userId;
 
   @override
@@ -29,7 +29,7 @@ class _UserPoemListState extends State<UserPoemList> {
   }
 
   Future<void> _retrieveUserId() async {
-    final storedUserId = await _storage.read(key: 'userId');
+    final storedUserId = await _idStorage.read(key: 'userId');
     setState(() {
       userId = storedUserId;
     });

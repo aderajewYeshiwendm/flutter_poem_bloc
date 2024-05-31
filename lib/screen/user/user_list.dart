@@ -20,6 +20,9 @@ class UsersList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        foregroundColor: Colors.deepPurple,
+        backgroundColor: Colors.amber,
         title: const Text('List of Users'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),

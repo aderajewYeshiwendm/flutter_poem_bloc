@@ -83,7 +83,7 @@ class UserPoemDetail extends StatelessWidget {
                     decoration: TextDecoration.underline)),
             BlocProvider(
               create: (context) => CommentBloc(
-                  CommentRepository(baseUrl: 'http://localhost:3000'))
+                  CommentRepository(baseUrl: 'http://10.0.2.2:3000'))
                 ..add(FetchComments(poem.id!)),
               child: CommentsSection(poemId: poem.id!),
             ),
@@ -197,7 +197,7 @@ class _CommentFormState extends State<CommentForm> {
               if (newComment.isNotEmpty) {
                 context.read<CommentBloc>().add(AddComment(
                       poemId: widget.poemId,
-                      username: 'someone', // Replace with actual author
+                      username: "user", // Replace with actual author
                       content: newComment,
                     ));
                 _commentController.clear();

@@ -20,6 +20,8 @@ import 'bloc_observer.dart';
 import 'data_provider/poem_data.dart';
 import 'repository/poem_repository.dart';
 import 'screen/login_page.dart';
+import 'screen/poem/poem_add_update.dart';
+import 'screen/poem/poem_arg.dart';
 import 'screen/signup_page.dart';
 import 'screen/about.dart';
 import 'screen/contacts.dart';
@@ -34,7 +36,7 @@ void main() {
   final UserRepository userRepository =
       UserRepository(dataProvider: UserDataProvider(httpClient: http.Client()));
   final favoriteRepository =
-      FavoritesRepository(baseUrl: 'http://localhost:3000');
+      FavoritesRepository(baseUrl: 'http://10.0.2.2:3000');
 
   runApp(PoemApp(
     poemRepository: poemRepository,
@@ -67,6 +69,13 @@ class PoemApp extends StatelessWidget {
             username: 'aderajew',
             email: 'adera@gmail.com',
           ),
+        ),
+        GoRoute(
+          path: '/addUpdatePoem',
+          builder: (context, state) {
+            final PoemArgument args = state.extra as PoemArgument;
+            return AddUpdatePoem(args: args);
+          },
         ),
         GoRoute(
           path: '/user',

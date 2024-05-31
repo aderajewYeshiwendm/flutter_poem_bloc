@@ -24,7 +24,14 @@ class _UpdateUserState extends State<UpdateUser> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('edit user'),
+        centerTitle: true,
+        title: const Text(
+          'Role assign to user!',
+          style: TextStyle(
+              color: Colors.lightGreen,
+              fontSize: 30,
+              fontWeight: FontWeight.w800),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -41,13 +48,17 @@ class _UpdateUserState extends State<UpdateUser> {
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(labelText: 'user name'),
+                  decoration: const InputDecoration(
+                      labelText: 'user name', border: OutlineInputBorder()),
                   onSaved: (value) {
                     setState(() {
                       _user["username"] = value;
                     });
                     print('user username: ${value ?? 'null'}');
                   }),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                   initialValue: widget.args.edit ? widget.args.user.email : '',
                   validator: (value) {
@@ -56,12 +67,16 @@ class _UpdateUserState extends State<UpdateUser> {
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(labelText: 'user email'),
+                  decoration: const InputDecoration(
+                      labelText: 'user email', border: OutlineInputBorder()),
                   onSaved: (value) {
                     setState(() {
                       _user["email"] = value;
                     });
                   }),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                   initialValue: widget.args.edit ? widget.args.user.role : '',
                   validator: (value) {
@@ -71,7 +86,8 @@ class _UpdateUserState extends State<UpdateUser> {
                     return null;
                   },
                   maxLines: null,
-                  decoration: const InputDecoration(labelText: 'user role'),
+                  decoration: const InputDecoration(
+                      labelText: 'user role', border: OutlineInputBorder()),
                   onSaved: (value) {
                     setState(() {
                       _user["role"] = value;
@@ -81,6 +97,13 @@ class _UpdateUserState extends State<UpdateUser> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.blue,
+                    backgroundColor: Colors.greenAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
                   onPressed: () {
                     final form = _formKey.currentState;
                     if (form!.validate()) {
@@ -100,7 +123,10 @@ class _UpdateUserState extends State<UpdateUser> {
                       context.go('/admin');
                     }
                   },
-                  label: Text("Edit"),
+                  label: const Text(
+                    "Assign",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                  ),
                   icon: const Icon(Icons.save),
                 ),
               ),

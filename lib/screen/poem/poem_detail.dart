@@ -23,6 +23,12 @@ class PoemDetail extends StatelessWidget {
           '        ${poem.title}',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+        leading: IconButton(
+          onPressed: () {
+            context.go('/admin');
+          },
+          icon: const Icon(Icons.arrow_back),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit),
@@ -40,18 +46,13 @@ class PoemDetail extends StatelessWidget {
             icon: const Icon(Icons.delete),
             onPressed: () {
               context.read<PoemBloc>().add(PoemDelete(poem));
-              context.go('/poem_list');
+              context.go('/admin');
             },
           ),
           const SizedBox(
             width: 20,
           )
         ],
-        leading: IconButton(
-            onPressed: () {
-              context.go('/admin');
-            },
-            icon: const Icon(Icons.arrow_back)),
       ),
       backgroundColor: Colors.lightBlueAccent,
       body: Padding(

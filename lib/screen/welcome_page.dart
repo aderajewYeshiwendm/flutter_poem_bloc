@@ -81,13 +81,31 @@ class _WelcomeColumn extends StatelessWidget {
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   'Welcome!',
+                  key: Key('welcomeText'), // Key added here
+
                   style: TextStyle(
                     fontSize: 80,
+                    fontWeight: FontWeight.w900,
+                    foreground: Paint()
+                      ..shader = const LinearGradient(
+                        colors: [Colors.blue, Colors.green],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: [0.0, 1.0],
+                      ).createShader(
+                        const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+                      ),
+                  ),
+                ),
+                Text(
+                  'To your poems!!!',
+                  style: TextStyle(
+                    fontSize: 50,
                     fontWeight: FontWeight.w900,
                     foreground: Paint()
                       ..shader = const LinearGradient(
@@ -100,11 +118,15 @@ class _WelcomeColumn extends StatelessWidget {
                       ),
                   ),
                 ),
+                const SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ),
         ),
         ElevatedButton(
+          key: Key('loginButton'),
           onPressed: () {
             context.read<WelcomeBloc>().add(NavigateToLogin());
           },
@@ -126,6 +148,7 @@ class _WelcomeColumn extends StatelessWidget {
         ),
         const SizedBox(height: 40),
         ElevatedButton(
+          key: Key('signupButton'),
           onPressed: () {
             context.read<WelcomeBloc>().add(NavigateToSignUp());
           },

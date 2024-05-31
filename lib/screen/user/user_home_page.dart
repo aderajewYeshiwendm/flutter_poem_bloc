@@ -60,7 +60,7 @@ class _UserHomePageState extends State<UserHomePage> {
 
     try {
       final response = await http.put(
-        Uri.parse('http://localhost:3000/api/users/$userId'),
+        Uri.parse('http://10.0.2.2:3000/api/users/$userId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

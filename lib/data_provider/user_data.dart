@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../models/user.dart';
 
 class UserDataProvider {
-  final _baseUrl = 'http://localhost:3000/api/users/';
+  final _baseUrl = 'http://10.0.2.2:3000/api/users/';
   final http.Client httpClient;
 
   UserDataProvider({required this.httpClient});
@@ -41,7 +41,7 @@ class UserDataProvider {
 
   Future<void> updateUser(User user, {required String token}) async {
     final http.Response response = await httpClient.put(
-      Uri.parse('http://localhost:3000/api/allusers/${user.id}'),
+      Uri.parse('http://10.0.2.2:3000/api/allusers/${user.id}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
