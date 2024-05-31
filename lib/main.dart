@@ -1,125 +1,157 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'package:my_flutter_project/bloc/favorites_bloc/favorite_bloc.dart';
+import 'package:my_flutter_project/poem.dart';
+import 'package:my_flutter_project/repository/fav_repo.dart';
+import 'package:my_flutter_project/screen/main_home_page.dart';
+import 'package:my_flutter_project/screen/poem/poem_detail.dart';
+import 'package:my_flutter_project/screen/poem/poem_list.dart';
+import 'package:my_flutter_project/screen/user/user_home_page.dart';
+import 'package:my_flutter_project/screen/user/user_list.dart';
+import 'package:my_flutter_project/screen/user/user_poem_detail.dart';
+
+import 'bloc/poem_bloc/poem_bloc.dart';
+import 'bloc/poem_bloc/poem_event.dart';
+import 'bloc/user_bloc/user_bloc.dart';
+import 'bloc/user_bloc/user_event.dart';
+import 'bloc_observer.dart';
+import 'data_provider/poem_data.dart';
+import 'repository/poem_repository.dart';
+import 'screen/login_page.dart';
+import 'screen/signup_page.dart';
+import 'screen/about.dart';
+import 'screen/contacts.dart';
+import 'screen/welcome_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  Bloc.observer = SimpleBlocObserver();
+  final PoemRepository poemRepository = PoemRepository(
+      dataProvider: PoemDataProvider(
+    httpClient: http.Client(),
+  ));
+  final UserRepository userRepository =
+      UserRepository(dataProvider: UserDataProvider(httpClient: http.Client()));
+  final favoriteRepository =
+      FavoritesRepository(baseUrl: 'http://localhost:3000');
+
+  runApp(PoemApp(
+    poemRepository: poemRepository,
+    userRepository: userRepository,
+    favoritesRepository: favoriteRepository,
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class PoemApp extends StatelessWidget {
+  final PoemRepository poemRepository;
+  final UserRepository userRepository;
+  final FavoritesRepository favoritesRepository;
 
-  // This widget is the root of your application.
+  PoemApp(
+      {required this.poemRepository,
+      required this.userRepository,
+      required this.favoritesRepository});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    final GoRouter _router = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const Welcome(),
+        ),
+        GoRoute(
+          path: '/admin',
+          builder: (context, state) => const MyHomePage(
+            username: 'aderajew',
+            email: 'adera@gmail.com',
+          ),
+        ),
+        GoRoute(
+          path: '/user',
+          builder: (context, state) => const UserHomePage(
+            username: 'aderajew',
+            email: 'adera@gmail.com',
+          ),
+        ),
+        GoRoute(
+          path: '/login',
+          builder: (context, state) => const LoginPage(),
+        ),
+        GoRoute(
+          path: '/signup',
+          builder: (context, state) => const SignupPage(),
+        ),
+        GoRoute(
+          path: '/welcome',
+          builder: (context, state) => const Welcome(),
+        ),
+        GoRoute(
+          path: '/about',
+          builder: (context, state) => const AboutPage(),
+        ),
+        GoRoute(
+          path: '/poemDetail',
+          builder: (context, state) {
+            final poem = state.extra as Poem;
+            return PoemDetail(poem: poem);
+          },
+        ),
+        GoRoute(
+          path: '/userPoemDetail',
+          builder: (context, state) {
+            final poem = state.extra as Poem;
+            return UserPoemDetail(poem: poem);
+          },
+        ),
+        GoRoute(
+          path: '/users_list',
+          builder: (context, state) => UsersList(),
+        ),
+        GoRoute(
+          path: '/contacts',
+          builder: (context, state) => const Contact(),
+        ),
+        GoRoute(
+          path: '/poem_list',
+          builder: (context, state) => PoemsList(),
+        ),
+      ],
     );
-  }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<PoemRepository>(
+          create: (context) => poemRepository,
+        ),
+        RepositoryProvider<UserRepository>(
+          create: (context) => userRepository,
+        ),
+        BlocProvider<FavoriteBloc>(
+          create: (context) => FavoriteBloc(favoritesRepository),
+        ),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<PoemBloc>(
+            create: (context) =>
+                PoemBloc(poemRepository: poemRepository)..add(PoemLoad()),
+          ),
+          BlocProvider<UserBloc>(
+            create: (context) =>
+                UserBloc(userRepository: userRepository)..add(UserLoad()),
+          ),
+        ],
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Poem App',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          routerConfig: _router,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
